@@ -38,9 +38,14 @@ public class UserService {
 
     public UserEntity updateUser(Long id, UserEntity updatedUser) {
         return userRepository.findById(id).map(user -> {
-            user.setName(updatedUser.getName());
+            user.setFirstName(updatedUser.getFirstName());
+            user.setLastName(updatedUser.getLastName());
             user.setAge(updatedUser.getAge());
-            user.setAddress(updatedUser.getAddress());
+            user.setStreet(updatedUser.getStreet());
+            user.setCity(updatedUser.getCity());
+            user.setState(updatedUser.getState());
+            user.setLatitude(updatedUser.getLatitude());
+            user.setLongitude(updatedUser.getLongitude());
             user.setCcnumber(updatedUser.getCcnumber());
             return userRepository.save(user);
         }).orElseThrow(() -> new RuntimeException("User not found"));

@@ -28,20 +28,36 @@ Prosjektet bruker følgende teknologier:
 - **Backend med REST API**: Java og Spring Boot  
   Spring Boot ble valgt på grunn av sin evne til å bygge produksjonsklare REST API-er raskt og effektivt. 
 Det tilbyr god støtte for databaser, enkel konfigurasjon og rask utvikling av mikrotjenester.
-
 - **Frontend-applikasjon**: React med TypeScript  
   TypeScript ble valgt som språk for frontend-applikasjonen fordi det gir fordelen av statisk typing, noe som hjelper med å unngå feil ved bruk av API-data. TypeScript gir bedre autokomplettering og gjør koden mer robust og vedlikeholdbar, spesielt i større prosjekter. React ble valgt for sin fleksibilitet, raske responstid, og gode mulighet for gjenbruk av komponenter.
-
 - **Database**: PostgreSQL  
   PostgreSQL ble valgt for sin stabilitet og pålitelighet i håndtering av store datamengder. Med støtte for avanserte datatyper og indeksering er PostgreSQL et godt valg for applikasjoner som krever kompleks datahåndtering.
 
-### Hvorfor disse spesifikke teknologiene?
 
+
+
+
+### Vurderinger under utvikling
+I denne seksjonen beskrives noen av de viktigste vurderingene og beslutningene som ble tatt under utviklingen av prosjektet. Dette inkluderer valg av datalastingsmetode, sikkerhetshensyn, og teknologivalg.
+
+#### Hvorfor disse spesifikke teknologiene?
 - **Maven vs Gradle**: Maven ble valgt som byggesystem for prosjektet fordi det er enkelt å bruke, og strukturen i XML-format gjør det lett å lese og håndtere for mindre og middels store prosjekter. Maven har vært standarden i Java-miljøet i mange år og er kjent for sin pålitelighet og forutsigbarhet.
-
 - **Spring Data JPA vs JDBC**: Spring Data JPA ble valgt over JDBC på grunn av det høyere abstraksjonsnivået det gir. Med Spring Data JPA kan CRUD-operasjoner (Create, Read, Update, Delete) håndteres uten å skrive mye SQL, og det gir en enklere datatilgang og lagring gjennom objekt-relasjonsmapping. Dette gjør koden kortere og lettere å vedlikeholde.
-
 - **PostgreSQL vs Andre Databaser**: PostgreSQL ble valgt som database på grunn av dens robuste funksjonalitet og støtte for komplekse dataspørringer. Sammenlignet med alternativer som SQLite (som mangler støtte for avanserte spørringer) og MySQL (som mangler noen funksjoner for komplekse datasett), er PostgreSQL godt egnet for produksjonsmiljøer og gir god ytelse og skalerbarhet.
+
+**Valg av datalastingsmetode**:
+For å laste inn eksempeldata til databasen, ble det valgt å inkludere CSV-filen i prosjektet og bruke en data-loader som leser CSV-en ved oppstart. Denne tilnærmingen gjør det enkelt for andre brukere å klone prosjektet og få databasefylt med eksempeldata uten ekstra steg. Andre alternativer som ble vurdert var å konvertere CSV-filen til et SQL-innskript eller å lage et separat migreringsverktøy. Å konvertere til SQL-skript gir rask datalasting, men gir mindre fleksibilitet om CSV-formatet endres, mens et separat migreringsverktøy gir ryddig separasjon, men er mer komplisert å sette opp og krever manuell kjøring.
+
+
+**Merk om sikkerhet for produksjonsmiljø**:  
+Dette prosjektet bruker et enkelt passord for enkelhet i lokal utvikling.
+Hvis det tas i bruk i et produksjonsmiljø, er det viktig å bruke sterke, unike passord for alle database- og systemtilganger.
+I tillegg bør alle sensitive opplysninger krypteres og lagres i miljøvariabler eller i et verktøy for hemmelighetsforvaltning,
+i stedet for å være hardkodet eller lagret som ren tekst i konfigurasjonsfiler.
+
+
+
+
 
 ## Bruk
 
@@ -64,12 +80,13 @@ Frontend-applikasjonen viser statistikk over datasettet, som kan inkludere total
 | PATCH       | `/api/users/{id}`  | Oppdaterer en bruker basert på ID |
 | DELETE      | `/api/users/{id}`  | Sletter en bruker basert på ID |
 
-**Merk om sikkerhet for produksjonsmiljø**:  
-Dette prosjektet bruker et enkelt passord for enkelhet i lokal utvikling. 
-Hvis det tas i bruk i et produksjonsmiljø, er det viktig å bruke sterke, unike passord for alle database- og systemtilganger. 
-I tillegg bør alle sensitive opplysninger krypteres og lagres i miljøvariabler eller i et verktøy for hemmelighetsforvaltning, 
-i stedet for å være hardkodet eller lagret som ren tekst i konfigurasjonsfiler.
 
+## Kjøre applikasjonen
+
+1. Start PostgreSQL-databasen.
+2. Start backend med Spring Boot.
+3. Start frontend-applikasjonen.
+4. Gå til `http://localhost:3000` for å begynne å bruke applikasjonen.
 
 ## Installasjon og Oppsett
 
@@ -113,10 +130,3 @@ npm install
 npm start
 ```
 Frontend-applikasjonen vil kjøre på http://localhost:3000.
-
-## Kjøre applikasjonen
-
-1. Start PostgreSQL-databasen.
-2. Start backend med Spring Boot.
-3. Start frontend-applikasjonen.
-4. Gå til `http://localhost:3000` for å begynne å bruke applikasjonen.
