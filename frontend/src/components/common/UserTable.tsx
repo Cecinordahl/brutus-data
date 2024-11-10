@@ -1,25 +1,9 @@
 import React from 'react';
-
-interface User {
-    id?: number;
-    firstName: string;
-    lastName: string;
-    age: number;
-    street: string;
-    city: string;
-    state: string;
-    latitude: number;
-    longitude: number;
-    ccnumber: string;
-}
+import {User} from "../../models/User";
 
 interface UserTableProps {
     users: User[];
 }
-
-const formatCcNumber = (ccnumber: string): string => {
-    return `**** **** **** ${ccnumber.slice(-4)}`;
-};
 
 const UserTable: React.FC<UserTableProps> = ({ users }) => {
     return (
@@ -48,7 +32,7 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
                     <td>{user.state}</td>
                     <td>{user.latitude.toFixed(4)}</td>
                     <td>{user.longitude.toFixed(4)}</td>
-                    <td>{formatCcNumber(user.ccnumber)}</td>
+                    <td>{user.maskedCcnumber}</td>
                 </tr>
             ))}
             </tbody>

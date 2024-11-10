@@ -4,6 +4,7 @@ import com.ceci.projects.brutusdata.domain.UserEntity;
 import com.ceci.projects.brutusdata.model.UserDto;
 import com.ceci.projects.brutusdata.service.UserMapper;
 import com.ceci.projects.brutusdata.service.UserService;
+import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,11 +19,13 @@ public class UserResource {
 
     private final UserService userService;
     private final UserMapper userMapper;
+    private final AopAutoConfiguration aopAutoConfiguration;
 
     public UserResource(UserService userService,
-                        UserMapper userMapper) {
+                        UserMapper userMapper, AopAutoConfiguration aopAutoConfiguration) {
         this.userService = userService;
         this.userMapper = userMapper;
+        this.aopAutoConfiguration = aopAutoConfiguration;
     }
 
     @GetMapping("/users/search")

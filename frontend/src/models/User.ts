@@ -8,5 +8,5 @@ export interface User {
     state: string;
     latitude: number;
     longitude: number;
-    ccnumber: string;
+    maskedCcnumber: string;
 }

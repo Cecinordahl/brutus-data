@@ -8,20 +8,20 @@ import UserTable from "../common/UserTable";
 const UserListPage: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [offset, setOffset] = useState(0);
-    const [limit] = useState(10); // Number of users per page
-    const [totalUsers, setTotalUsers] = useState(0); // Total number of users for pagination
+    const [limit] = useState(10);
+    const [totalUsers, setTotalUsers] = useState(0);
     const [searchParams, setSearchParams] = useState({
         firstName: '',
         lastName: '',
         city: '',
-        minAge: 16, // Default minimum age
-        maxAge: 75 // Default maximum age
+        minAge: 16,
+        maxAge: 75
     });
 
     const loadUsers = async () => {
         const { data, total } = await fetchUsers(limit, offset, searchParams);
         setUsers(data);
-        setTotalUsers(total); // Set total number of users for pagination
+        setTotalUsers(total);
     };
 
     useEffect(() => {
@@ -31,7 +31,7 @@ const UserListPage: React.FC = () => {
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setSearchParams(prev => ({ ...prev, [name]: value }));
-        setOffset(0); // Reset offset for new search
+        setOffset(0);
     };
 
     const handleAgeRangeChange = (newValue: number[]) => {
@@ -40,7 +40,7 @@ const UserListPage: React.FC = () => {
             minAge: newValue[0],
             maxAge: newValue[1]
         }));
-        setOffset(0); // Reset offset for new search
+        setOffset(0);
     };
 
     const handleNextPage = () => {

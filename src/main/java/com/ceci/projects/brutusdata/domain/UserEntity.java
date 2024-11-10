@@ -1,5 +1,4 @@
 package com.ceci.projects.brutusdata.domain;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
@@ -26,7 +25,6 @@ public class UserEntity {
 
     private double longitude;
 
-    @JsonIgnore
     private String ccnumber;
 
     @JsonProperty("maskedCcnumber")

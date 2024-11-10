@@ -80,7 +80,7 @@ public class UserCsvParser {
 
     private String validateCreditCardNumber(String ccStr) {
         String ccnumber = ccStr.trim();
-        if (!ccnumber.matches("\\d{15,16}")) { // Validate length and numeric format
+        if (!ccnumber.matches("\\d{15,16}")) {
             throw new IllegalArgumentException("Invalid credit card number");
         }
         return ccnumber;

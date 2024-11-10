@@ -62,7 +62,7 @@ i stedet for å være hardkodet eller lagret som ren tekst i konfigurasjonsfiler
 ## Bruk
 
 ### Last opp data
-For å laste opp data kan du bruke et POST-endepunkt eller opplaste CSV-data fra frontend (hvis implementert). Dataene vil bli lagret i PostgreSQL-databasen.
+For å laste opp data kan du bruke et POST-endepunkt eller opplaste CSV-data fra frontend. Dataene vil bli lagret i PostgreSQL-databasen.
 
 ### Filtrering og søk
 Applikasjonen tilbyr muligheter for filtrering og søk gjennom brukergrensesnittet, som gjør det mulig for HR-avdelingen å se spesifikke brukere eller grupper av brukere basert på ønskede kriterier.
@@ -72,13 +72,12 @@ Frontend-applikasjonen viser statistikk over datasettet, som kan inkludere total
 
 ## API-endepunkter
 
-| HTTP Method | Endpoint           | Beskrivelse                    |
-|-------------|---------------------|--------------------------------|
-| POST        | `/api/users`       | Laster opp ny brukerdata       |
-| GET         | `/api/users`       | Henter alle brukere            |
-| GET         | `/api/users/{id}`  | Henter bruker basert på ID     |
-| PATCH       | `/api/users/{id}`  | Oppdaterer en bruker basert på ID |
-| DELETE      | `/api/users/{id}`  | Sletter en bruker basert på ID |
+| HTTP Method | Endpoint            | Beskrivelse                                                        |
+|-------------|---------------------|--------------------------------------------------------------------|
+| POST        | `/api/users`        | Laster opp ny brukerdata                                           |
+| GET         | `/api/users/search` | Henter brukere i bolker samt totalen av antall brukere i databasen |
+| GET         | `/api/stats`        | Henter bruker statistikk                                           |
+| POST        | `/api/users/upload` | Laster opp ny brukerdata fra fil                                   |
 
 
 ## Kjøre applikasjonen
@@ -134,3 +133,6 @@ Frontend-applikasjonen vil kjøre på http://localhost:3000.
 ## Fremtidig Funksjonalitet
 - Lagre minAge og maxAge som miljø variabler som frontend kan hente via api siden disse er brukt mange steder og endringer kan føre til feil.
 - Lage flere konstanter av ting som går igjen
+- Lage tokenization/bedre masking for kredittkort nr
+- Tester (inkl IT)
+- Nye, mer passende navn til api'ene

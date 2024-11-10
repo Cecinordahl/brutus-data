@@ -8,8 +8,8 @@ export const fetchUsers = async (limit: number, offset: number, searchParams: an
     try {
         const response = await getUsers(limit, offset, searchParams);
         return {
-            data: response.data.data, // User data
-            total: response.data.total // Total count
+            data: response.data.data,
+            total: response.data.total
         };
     } catch (error) {
         console.error('Error fetching users:', error);
