@@ -130,3 +130,6 @@ npm install
 npm start
 ```
 Frontend-applikasjonen vil kjøre på http://localhost:3000.
+
+## Fremtidig Funksjonalitet
+- Lagre minAge og maxAge som miljø variabler som frontend kan hente via api siden disse er brukt mange steder og endringer kan føre til feil.

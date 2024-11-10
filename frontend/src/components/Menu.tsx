@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import '../styles/App.css';
+import '../styles/Menu.css';
 
 const Menu: React.FC = () => {
     const navigate = useNavigate();
@@ -8,6 +8,12 @@ const Menu: React.FC = () => {
 
     return (
         <div className="menu-container">
+            <button
+                onClick={() => navigate('/add-user')}
+                className={location.pathname === '/add-user' ? 'active' : ''}
+            >
+                Create New User
+            </button>
             <button
                 onClick={() => navigate('/search')}
                 className={location.pathname === '/search' ? 'active' : ''}

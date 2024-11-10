@@ -4,13 +4,15 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import UserListPage from './components/UserListPage';
 import StatisticsPage from './components/StatisticsPage';
 import Menu from './components/Menu';
+import AddUserPage from "./components/AddUserPage";
 
 const App: React.FC = () => {
     return (
         <Router>
             <Menu />
             <Routes>
-                <Route path="/" element={<Navigate to="/search" />} /> {/* Redirect to SearchPage as default */}
+                <Route path="/" element={<Navigate to="/search" />} />
+                <Route path="/add-user" element={<AddUserPage />}/>
                 <Route path="/search" element={<UserListPage />} />
                 <Route path="/statistics" element={<StatisticsPage />} />
             </Routes>

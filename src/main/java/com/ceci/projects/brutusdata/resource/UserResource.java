@@ -3,7 +3,9 @@ package com.ceci.projects.brutusdata.resource;
 import com.ceci.projects.brutusdata.model.UserEntity;
 import com.ceci.projects.brutusdata.service.UserService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,15 +20,8 @@ public class UserResource {
         this.userService = userService;
     }
 
-/*    @GetMapping
-    public List<UserEntity> getAllUsers(@RequestParam(defaultValue = "10") int limit,
-                                        @RequestParam(defaultValue = "0") int offset
-    ) {
-        return userService.getUsers(limit, offset);
-    }*/
-
     @GetMapping("/users/search")
-    public List<UserEntity> searchUsers(
+    public Map<String, Object> searchUsers(
             @RequestParam(required = false) String firstName,
             @RequestParam(required = false) String lastName,
             @RequestParam(required = false) String city,
@@ -35,7 +30,14 @@ public class UserResource {
             @RequestParam(defaultValue = "10") int limit,
             @RequestParam(defaultValue = "0") int offset
     ) {
-        return userService.searchUsers(firstName, lastName, city, minAge, maxAge, limit, offset);
+        List<UserEntity> users = userService.searchUsers(firstName, lastName, city, minAge, maxAge, limit, offset);
+        int totalCount = userService.countUsers(firstName, lastName, city, minAge, maxAge); // New method to get total count
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("data", users);
+        response.put("total", totalCount); // Include total count in the response
+
+        return response;
     }
 
     @GetMapping("/stats")
@@ -43,24 +45,13 @@ public class UserResource {
         return userService.getUserStatistics();
     }
 
-  /*  @GetMapping("/{id}")
-    public UserEntity getUserById(@PathVariable Long id) {
-        return userService.getUserById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-    }
-
-    @PostMapping
+    @PostMapping("/users")
     public UserEntity createUser(@RequestBody UserEntity user) {
-        return userService.createUser(user);
+        return userService.saveUser(user);
     }
 
-    @PatchMapping("/{id}")
-    public UserEntity updateUser(@PathVariable Long id, @RequestBody UserEntity updatedUser) {
-        return userService.updateUser(id, updatedUser);
+    @PostMapping("/users/upload")
+    public List<UserEntity> uploadUsersCsv(@RequestParam("file") MultipartFile file) {
+        return userService.saveUsersFromCsv(file);
     }
-
-    @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-    }*/
 }

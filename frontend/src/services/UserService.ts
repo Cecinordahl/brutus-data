@@ -7,10 +7,13 @@ const STATS_URL = 'http://localhost:8080/api/stats';
 export const fetchUsers = async (limit: number, offset: number, searchParams: any) => {
     try {
         const response = await getUsers(limit, offset, searchParams);
-        return response.data; // Return data for direct usage
+        return {
+            data: response.data.data, // User data
+            total: response.data.total // Total count
+        };
     } catch (error) {
         console.error('Error fetching users:', error);
-        return []; // Return empty array or handle as needed
+        return { data: [], total: 0 }; // Return empty data and zero total in case of error
     }
 };
 
@@ -36,18 +39,31 @@ export const getUserStatistics = async () => {
     return await axios.get(STATS_URL);
 };
 
-export const getUserById = async (id: number) => {
-    return await axios.get(`${USERS_URL}/${id}`);
+// Add a single user
+export const addUser = async (userData: any) => {
+    try {
+        const response = await axios.post(USERS_URL, userData);
+        return response.data;
+    } catch (error) {
+        console.error('Error adding user:', error);
+        throw error;
+    }
 };
 
-export const createUser = async (user: any) => {
-    return await axios.post(USERS_URL, user);
-};
+// Upload a CSV file for bulk user creation
+export const uploadUserCsv = async (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
 
-export const updateUser = async (id: number, user: any) => {
-    return await axios.patch(`${USERS_URL}/${id}`, user);
-};
-
-export const deleteUser = async (id: number) => {
-    return await axios.delete(`${USERS_URL}/${id}`);
+    try {
+        const response = await axios.post(`${USERS_URL}/upload`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error uploading CSV:', error);
+        throw error;
+    }
 };

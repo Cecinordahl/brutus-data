@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import AgeDistributionChart from './AgeDistributionChart';
 import { fetchStatistics } from '../services/UserService';
-import '../styles/UserList.css';
-
-interface Statistics {
-    totalUsers: number;
-    averageAge: number;
-    mostCommonCity: string;
-    ageDistribution: Record<string, number>;
-}
+import '../styles/StatisticsPage.css';
+import {Statistics} from "../models/Statistics";
 
 const StatisticsPage: React.FC = () => {
     const [statistics, setStatistics] = useState<Statistics>({

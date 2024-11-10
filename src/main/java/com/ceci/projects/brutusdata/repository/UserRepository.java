@@ -11,6 +11,7 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
+
     @Query("SELECT user FROM UserEntity user WHERE " +
             "(:firstName IS NULL OR user.firstName ILIKE %:firstName%) AND " +
             "(:lastName IS NULL OR user.lastName ILIKE %:lastName%) AND " +
@@ -26,5 +27,17 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
             @Param("maxAge") Integer maxAge,
             Pageable pageable);
 
-
+    @Query("SELECT COUNT(user) FROM UserEntity user WHERE " +
+            "(:firstName IS NULL OR user.firstName ILIKE %:firstName%) AND " +
+            "(:lastName IS NULL OR user.lastName ILIKE %:lastName%) AND " +
+            "(:city IS NULL OR user.city ILIKE %:city%) AND " +
+            "(user.age >= :minAge) AND " +
+            "(user.age <= :maxAge)")
+    int countBySearchCriteria(
+            @Param("firstName") String firstName,
+            @Param("lastName") String lastName,
+            @Param("city") String city,
+            @Param("minAge") int minAge,
+            @Param("maxAge") int maxAge
+    );
 }

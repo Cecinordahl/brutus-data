@@ -1,10 +1,13 @@
 import React from 'react';
 import { User } from '../models/User';
-import { formatCcNumber } from '../utils/formatters';
 
 interface UserRowProps {
     user: User;
 }
+
+const formatCcNumber = (ccnumber: string): string => {
+        return `**** **** **** ${ccnumber.slice(-4)}`;
+};
 
 const UserRow: React.FC<UserRowProps> = ({ user }) => (
     <tr>

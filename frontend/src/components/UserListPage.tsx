@@ -1,30 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import {fetchUsers} from '../services/UserService';
+import { fetchUsers } from '../services/UserService';
 import { User } from '../models/User';
 import UserRow from './UserRow';
-import AgeRangeSlider from './AgeRangeSlider'; // Import the AgeRangeSlider component
-import '../styles/UserList.css';
+import AgeRangeSlider from './AgeRangeSlider';
+import '../styles/UserListPage.css';
 
 const UserListPage: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [offset, setOffset] = useState(0);
-    const [limit] = useState(10);
+    const [limit] = useState(10); // Number of users per page
+    const [totalUsers, setTotalUsers] = useState(0); // Total number of users for pagination
     const [searchParams, setSearchParams] = useState({
         firstName: '',
         lastName: '',
         city: '',
-        minAge: 16,  // Default minimum age
-        maxAge: 75  // Default maximum age
+        minAge: 16, // Default minimum age
+        maxAge: 75 // Default maximum age
     });
 
     const loadUsers = async () => {
-        const data = await fetchUsers(limit, offset, searchParams);
-        setUsers(data); // Set the fetched user data in state
+        const { data, total } = await fetchUsers(limit, offset, searchParams);
+        setUsers(data);
+        setTotalUsers(total); // Set total number of users for pagination
     };
 
     useEffect(() => {
         loadUsers();
-    }, [searchParams]); // Trigger search when searchParams change
+    }, [offset, searchParams]); // Trigger search when offset or searchParams change
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -41,28 +43,45 @@ const UserListPage: React.FC = () => {
         setOffset(0); // Reset offset for new search
     };
 
+    const handleNextPage = () => {
+        if (offset + limit < totalUsers) {
+            setOffset(offset + limit);
+        }
+    };
+
+    const handlePreviousPage = () => {
+        if (offset - limit >= 0) {
+            setOffset(offset - limit);
+        }
+    };
+
+    // Calculate the current page number and total pages
+    const currentPage = Math.floor(offset / limit) + 1;
+    const totalPages = Math.ceil(totalUsers / limit);
+
     return (
         <div className="user-list-page-component">
             <h1>Search Users</h1>
+            <p>Results update automatically</p>
             <div>
-                <p>Search by First Name, Last Name, or City (results update automatically):</p>
+                <p>Search by first name, last name, or city:</p>
                 <input
                     type="text"
-                    placeholder="Search by First Name"
+                    placeholder="Search by first name"
                     name="firstName"
                     value={searchParams.firstName}
                     onChange={handleSearchChange}
                 />
                 <input
                     type="text"
-                    placeholder="Search by Last Name"
+                    placeholder="Search by last name"
                     name="lastName"
                     value={searchParams.lastName}
                     onChange={handleSearchChange}
                 />
                 <input
                     type="text"
-                    placeholder="Search by City"
+                    placeholder="Search by city"
                     name="city"
                     value={searchParams.city}
                     onChange={handleSearchChange}
@@ -78,6 +97,21 @@ const UserListPage: React.FC = () => {
                 </div>
             </div>
 
+            {/* Pagination Controls */}
+            <div className="pagination-controls">
+                <p>Displaying 10 users per page</p>
+                <button onClick={handlePreviousPage} disabled={offset === 0}>
+                    Previous
+                </button>
+                <span>
+                    Page {currentPage} of {totalPages}
+                </span>
+                <button onClick={handleNextPage} disabled={offset + limit >= totalUsers}>
+                    Next
+                </button>
+            </div>
+
+            {/* Display table */}
             <table>
                 <thead>
                 <tr>
@@ -94,7 +128,7 @@ const UserListPage: React.FC = () => {
                 </thead>
                 <tbody>
                 {users.map(user => (
-                    <UserRow key={user.id} user={user}/>
+                    <UserRow key={user.id} user={user} />
                 ))}
                 </tbody>
             </table>

@@ -1,12 +1,11 @@
-export interface User {
-    id?: number;
+export interface UserFormData {
     firstName: string;
     lastName: string;
-    age: number;
+    age: string;
     street: string;
     city: string;
     state: string;
-    latitude: number;
-    longitude: number;
+    latitude: string;
+    longitude: string;
     ccnumber: string;
 }

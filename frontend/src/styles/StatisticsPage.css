@@ -1,0 +1,30 @@
+.statistics-page-component {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+
+.statistics {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+.statistics h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.statistics p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.statistics .chart-container {
+    width: 50%;
+    margin: auto;
+}
