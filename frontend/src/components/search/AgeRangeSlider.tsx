@@ -1,6 +1,6 @@
 import React from 'react';
 import Slider from '@mui/material/Slider';
-import '../styles/AgeRangeSlider.css';
+import '../../styles/AgeRangeSlider.css';
 
 interface AgeRangeSliderProps {
     ageRange: number[];

@@ -18,7 +18,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
             "(:city IS NULL OR user.city ILIKE %:city%) AND " +
             "(:minAge IS NULL OR user.age >= :minAge) AND " +
             "(:maxAge IS NULL OR user.age <= :maxAge) " +
-            "ORDER BY user.lastName ASC")
+            "ORDER BY user.lastName ASC, user.firstName ASC")
     List<UserEntity> findBySearchCriteria(
             @Param("firstName") String firstName,
             @Param("lastName") String lastName,

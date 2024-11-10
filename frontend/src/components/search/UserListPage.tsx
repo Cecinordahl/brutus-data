@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { fetchUsers } from '../services/UserService';
-import { User } from '../models/User';
-import UserRow from './UserRow';
+import { fetchUsers } from '../../services/UserService';
+import { User } from '../../models/User';
 import AgeRangeSlider from './AgeRangeSlider';
-import '../styles/UserListPage.css';
+import '../../styles/UserListPage.css';
+import UserTable from "../common/UserTable";
 
 const UserListPage: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
@@ -112,26 +112,7 @@ const UserListPage: React.FC = () => {
             </div>
 
             {/* Display table */}
-            <table>
-                <thead>
-                <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Age</th>
-                    <th>Street</th>
-                    <th>City</th>
-                    <th>State</th>
-                    <th>Latitude</th>
-                    <th>Longitude</th>
-                    <th>Credit Card</th>
-                </tr>
-                </thead>
-                <tbody>
-                {users.map(user => (
-                    <UserRow key={user.id} user={user} />
-                ))}
-                </tbody>
-            </table>
+            <UserTable users={users} />
         </div>
     );
 };

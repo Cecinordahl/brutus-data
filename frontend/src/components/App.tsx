@@ -1,10 +1,10 @@
 import React from 'react';
-import './styles/App.css';
+import '../styles/App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import UserListPage from './components/UserListPage';
-import StatisticsPage from './components/StatisticsPage';
-import Menu from './components/Menu';
-import AddUserPage from "./components/AddUserPage";
+import UserListPage from './search/UserListPage';
+import StatisticsPage from './statistics/StatisticsPage';
+import Menu from './Menu';
+import AddUserPage from "./createnewuser/AddUserPage";
 
 const App: React.FC = () => {
     return (

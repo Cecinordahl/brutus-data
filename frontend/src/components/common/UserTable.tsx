@@ -17,6 +17,10 @@ interface UserTableProps {
     users: User[];
 }
 
+const formatCcNumber = (ccnumber: string): string => {
+    return `**** **** **** ${ccnumber.slice(-4)}`;
+};
+
 const UserTable: React.FC<UserTableProps> = ({ users }) => {
     return (
         <table>
@@ -42,9 +46,9 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
                     <td>{user.street}</td>
                     <td>{user.city}</td>
                     <td>{user.state}</td>
-                    <td>{user.latitude}</td>
-                    <td>{user.longitude}</td>
-                    <td>{user.ccnumber}</td>
+                    <td>{user.latitude.toFixed(4)}</td>
+                    <td>{user.longitude.toFixed(4)}</td>
+                    <td>{formatCcNumber(user.ccnumber)}</td>
                 </tr>
             ))}
             </tbody>

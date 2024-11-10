@@ -42,7 +42,7 @@ public class UserResource {
 
     @GetMapping("/stats")
     public Map<String, Object> getUserStatistics() {
-        return userService.getUserStatistics();
+        return userService.findUserStatistics();
     }
 
     @PostMapping("/users")

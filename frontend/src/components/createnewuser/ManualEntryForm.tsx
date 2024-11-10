@@ -1,5 +1,5 @@
 import React from 'react';
-import {UserFormData} from "../models/UserFormData";
+import {UserFormData} from "../../models/UserFormData";
 
 interface ManualEntryFormProps {
     userData: UserFormData;

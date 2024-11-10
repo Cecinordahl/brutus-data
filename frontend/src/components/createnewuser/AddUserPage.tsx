@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { addUser, uploadUserCsv } from '../services/UserService';
-import UserTable from './UserTable';
-import ManualEntryForm from '../components/ManualEntryForm';
-import CsvUploadForm from '../components/CsvUploadForm';
-import { validateUserData, validateCsvRow } from '../utils/ValidationUtils';
-import { User } from "../models/User";
+import { addUser, uploadUserCsv } from '../../services/UserService';
+import UserTable from '../common/UserTable';
+import ManualEntryForm from './ManualEntryForm';
+import CsvUploadForm from './CsvUploadForm';
+import { validateUserData, validateCsvRow } from '../../utils/ValidationUtils';
+import { User } from "../../models/User";
 
 const AddUserPage: React.FC = () => {
     const [userData, setUserData] = useState({
