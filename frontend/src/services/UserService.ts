@@ -2,8 +2,11 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:8080/api/users';
 
-export const getAllUsers = async () => {
-    return await axios.get(API_URL);
+export const getUsers = async (limit: number, offset: number, searchParams: any = {}) => {
+    const { firstName, lastName, city } = searchParams;
+    return await axios.get(API_URL + '/search', {
+        params: {limit, offset, firstName, lastName, city},
+    });
 };
 
 export const getUserById = async (id: number) => {

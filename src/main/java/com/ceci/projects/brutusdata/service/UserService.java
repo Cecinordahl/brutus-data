@@ -2,6 +2,8 @@ package com.ceci.projects.brutusdata.service;
 
 import com.ceci.projects.brutusdata.model.UserEntity;
 import com.ceci.projects.brutusdata.repository.UserRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +24,16 @@ public class UserService {
                 // TODO remove comment. We use peek on the stream in getAllUsers to set the masked credit card number before returning users to the client.
                 .peek(user -> user.setCcnumber(user.getMaskedCcnumber()))
                 .collect(Collectors.toList());
+    }
+
+    public List<UserEntity> getUsers(int limit, int offset) {
+        Pageable pageable = PageRequest.of(offset / limit, limit); // Calculates the page number
+        return userRepository.findAll(pageable).getContent();
+    }
+
+    public List<UserEntity> searchUsers(String firstName, String lastName, String city, int limit, int offset) {
+        Pageable pageable = PageRequest.of(offset / limit, limit);
+        return userRepository.findBySearchCriteria(firstName, lastName, city, pageable);
     }
 
     public Optional<UserEntity> getUserById(Long id) {
