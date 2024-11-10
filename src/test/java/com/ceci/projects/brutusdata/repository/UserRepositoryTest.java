@@ -1,6 +1,6 @@
 package com.ceci.projects.brutusdata.repository;
 
-import com.ceci.projects.brutusdata.model.UserEntity;
+import com.ceci.projects.brutusdata.domain.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

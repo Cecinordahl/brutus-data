@@ -1,4 +1,6 @@
-package com.ceci.projects.brutusdata.model;
+package com.ceci.projects.brutusdata.domain;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 @Entity
@@ -24,12 +26,10 @@ public class UserEntity {
 
     private double longitude;
 
+    @JsonIgnore
     private String ccnumber;
 
-    // TODO remove comments
-    // Method to return a masked credit card number for display purposes
-    // The @Transient annotation ensures getMaskedCcnumber is not persisted to the database.
-    @Transient
+    @JsonProperty("maskedCcnumber")
     public String getMaskedCcnumber() {
         return "**** **** **** " + ccnumber.substring(ccnumber.length() - 4);
     }

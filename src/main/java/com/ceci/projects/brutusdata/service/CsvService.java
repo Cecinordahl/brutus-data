@@ -1,6 +1,6 @@
 package com.ceci.projects.brutusdata.service;
 
-import com.ceci.projects.brutusdata.model.UserEntity;
+import com.ceci.projects.brutusdata.domain.UserEntity;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.stereotype.Service;

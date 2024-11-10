@@ -1,7 +1,7 @@
 package com.ceci.projects.brutusdata.service;
 
 import org.springframework.stereotype.Service;
-import com.ceci.projects.brutusdata.model.UserEntity;
+import com.ceci.projects.brutusdata.domain.UserEntity;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

@@ -1,6 +1,6 @@
 package com.ceci.projects.brutusdata.service;
 
-import com.ceci.projects.brutusdata.model.UserEntity;
+import com.ceci.projects.brutusdata.domain.UserEntity;
 import com.ceci.projects.brutusdata.repository.UserRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

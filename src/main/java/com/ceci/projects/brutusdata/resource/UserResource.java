@@ -1,6 +1,8 @@
 package com.ceci.projects.brutusdata.resource;
 
-import com.ceci.projects.brutusdata.model.UserEntity;
+import com.ceci.projects.brutusdata.domain.UserEntity;
+import com.ceci.projects.brutusdata.model.UserDto;
+import com.ceci.projects.brutusdata.service.UserMapper;
 import com.ceci.projects.brutusdata.service.UserService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,9 +17,12 @@ import java.util.Map;
 public class UserResource {
 
     private final UserService userService;
+    private final UserMapper userMapper;
 
-    public UserResource(UserService userService) {
+    public UserResource(UserService userService,
+                        UserMapper userMapper) {
         this.userService = userService;
+        this.userMapper = userMapper;
     }
 
     @GetMapping("/users/search")
@@ -31,13 +36,10 @@ public class UserResource {
             @RequestParam(defaultValue = "0") int offset
     ) {
         List<UserEntity> users = userService.searchUsers(firstName, lastName, city, minAge, maxAge, limit, offset);
-        int totalCount = userService.countUsers(firstName, lastName, city, minAge, maxAge); // New method to get total count
+        int totalCount = userService.countUsers(firstName, lastName, city, minAge, maxAge);
+        List<UserDto> userDtos = userMapper.toUserDtoList(users);
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("data", users);
-        response.put("total", totalCount); // Include total count in the response
-
-        return response;
+        return createStringObjectMap(userDtos, totalCount);
     }
 
     @GetMapping("/stats")
@@ -46,12 +48,23 @@ public class UserResource {
     }
 
     @PostMapping("/users")
-    public UserEntity createUser(@RequestBody UserEntity user) {
-        return userService.saveUser(user);
+    public UserDto createUser(@RequestBody UserEntity user) {
+        UserEntity userEntity = userService.saveUser(user);
+        return userMapper.toUserDto(userEntity);
     }
 
     @PostMapping("/users/upload")
-    public List<UserEntity> uploadUsersCsv(@RequestParam("file") MultipartFile file) {
-        return userService.saveUsersFromCsv(file);
+    public List<UserDto> uploadUsersCsv(@RequestParam("file") MultipartFile file) {
+        List<UserEntity> userEntities = userService.saveUsersFromCsv(file);
+        return userMapper.toUserDtoList(userEntities);
+    }
+
+    /* Helper methods */
+
+    private Map<String, Object> createStringObjectMap(List<UserDto> users, int totalCount) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("data", users);
+        response.put("total", totalCount);
+        return response;
     }
 }
