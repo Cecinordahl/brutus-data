@@ -13,3 +13,21 @@ th, td {
 th {
     background-color: #f2f2f2;
 }
+
+.age-slider {
+    width: 100%;
+    height: 6px;
+    margin: 20px 0;
+}
+
+.age-track {
+    background: #ddd;
+}
+
+.age-thumb {
+    height: 16px;
+    width: 16px;
+    background-color: #007bff;
+    cursor: pointer;
+    border-radius: 50%;
+}

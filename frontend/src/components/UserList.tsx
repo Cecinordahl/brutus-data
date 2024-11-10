@@ -2,19 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { getUsers } from '../services/UserService';
 import { User } from '../models/User';
 import UserRow from './UserRow';
+import AgeRangeSlider from './AgeRangeSlider'; // Import the AgeRangeSlider component
 import '../styles/UserList.css';
 
 const UserList: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [offset, setOffset] = useState(0);
     const [limit] = useState(10);
-    const [searchParams, setSearchParams] = useState({ firstName: '', lastName: '', city: '' });
+    const [searchParams, setSearchParams] = useState({
+        firstName: '',
+        lastName: '',
+        city: '',
+        minAge: 18,  // Default minimum age
+        maxAge: 100  // Default maximum age
+    });
 
     const fetchUsers = async () => {
         try {
             const response = await getUsers(limit, offset, searchParams);
             setUsers(response.data);
-            setOffset(offset + limit);
         } catch (error) {
             console.error('Error fetching users:', error);
         }
@@ -22,7 +28,7 @@ const UserList: React.FC = () => {
 
     useEffect(() => {
         fetchUsers();
-    }, [searchParams]);
+    }, [searchParams]); // Trigger search when searchParams change
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -30,37 +36,50 @@ const UserList: React.FC = () => {
         setOffset(0); // Reset offset for new search
     };
 
-    const loadMoreUsers = () => {
-        fetchUsers();
+    const handleAgeRangeChange = (newValue: number[]) => {
+        setSearchParams(prev => ({
+            ...prev,
+            minAge: newValue[0],
+            maxAge: newValue[1]
+        }));
+        setOffset(0); // Reset offset for new search
     };
 
     return (
         <div>
             <h2>User List</h2>
-            {/* Search Form */}
             <div>
+                <p>Search by First Name, Last Name, or City (results update automatically):</p>
                 <input
                     type="text"
-                    placeholder="First Name"
+                    placeholder="Search by First Name"
                     name="firstName"
                     value={searchParams.firstName}
                     onChange={handleSearchChange}
                 />
                 <input
                     type="text"
-                    placeholder="Last Name"
+                    placeholder="Search by Last Name"
                     name="lastName"
                     value={searchParams.lastName}
                     onChange={handleSearchChange}
                 />
                 <input
                     type="text"
-                    placeholder="City"
+                    placeholder="Search by City"
                     name="city"
                     value={searchParams.city}
                     onChange={handleSearchChange}
                 />
-                <button onClick={fetchUsers}>Search</button>
+
+                {/* Age Range Slider */}
+                <div>
+                    <p>Filter by Age Range: 16 - 75</p>
+                    <AgeRangeSlider
+                        ageRange={[searchParams.minAge, searchParams.maxAge]}
+                        onChange={handleAgeRangeChange}
+                    />
+                </div>
             </div>
 
             <table>
@@ -83,7 +102,6 @@ const UserList: React.FC = () => {
                 ))}
                 </tbody>
             </table>
-            <button onClick={loadMoreUsers}>Load More</button>
         </div>
     );
 };

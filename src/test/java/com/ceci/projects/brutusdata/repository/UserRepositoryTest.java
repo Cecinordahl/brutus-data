@@ -7,14 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-@ActiveProfiles("test") // Use a specific profile for testing if needed
 public class UserRepositoryTest {
 
     @Autowired
@@ -22,7 +20,6 @@ public class UserRepositoryTest {
 
     @BeforeEach
     public void setUp() {
-        // Set up test data in the database
         UserEntity user1 = new UserEntity();
         user1.setFirstName("John");
         user1.setLastName("Doe");
@@ -46,37 +43,63 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void testFindBySearchCriteria_firstNameOnly() {
+    public void findBySearchCriteria_firstNameOnly() {
         Pageable pageable = PageRequest.of(0, 10);
-        List<UserEntity> results = userRepository.findBySearchCriteria("John", null, null, pageable);
+        List<UserEntity> results = userRepository.findBySearchCriteria("John", null, null, 18, 100, pageable);
 
         assertThat(results).hasSize(2);
         assertThat(results).extracting(UserEntity::getFirstName).containsOnly("John");
     }
 
     @Test
-    public void testFindBySearchCriteria_cityOnly() {
+    public void findBySearchCriteria_firstNameLowercaseOnly() {
         Pageable pageable = PageRequest.of(0, 10);
-        List<UserEntity> results = userRepository.findBySearchCriteria(null, null, "New York", pageable);
+        List<UserEntity> results = userRepository.findBySearchCriteria("john", null, null, 18, 100, pageable);
+
+        assertThat(results).hasSize(2);
+        assertThat(results).extracting(UserEntity::getFirstName).containsOnly("John");
+    }
+
+    @Test
+    public void findBySearchCriteria_cityOnly() {
+        Pageable pageable = PageRequest.of(0, 10);
+        List<UserEntity> results = userRepository.findBySearchCriteria(null, null, "New York", 18, 100, pageable);
 
         assertThat(results).hasSize(2);
         assertThat(results).extracting(UserEntity::getCity).containsOnly("New York");
     }
 
     @Test
-    public void testFindBySearchCriteria_firstNameAndCity() {
+    public void findBySearchCriteria_firstNameAndCity() {
         Pageable pageable = PageRequest.of(0, 10);
-        List<UserEntity> results = userRepository.findBySearchCriteria("John", null, "New York", pageable);
+        List<UserEntity> results = userRepository.findBySearchCriteria("John", null, "New York", 18, 100, pageable);
 
         assertThat(results).hasSize(2);
-        assertThat(results.get(0).getFirstName()).isEqualTo("John");
-        assertThat(results.get(0).getCity()).isEqualTo("New York");
+        assertThat(results).extracting(UserEntity::getFirstName).containsOnly("John");
+        assertThat(results).extracting(UserEntity::getCity).containsOnly("New York");
     }
 
     @Test
-    public void testFindBySearchCriteria_noMatches() {
+    public void findBySearchCriteria_withAgeRange() {
         Pageable pageable = PageRequest.of(0, 10);
-        List<UserEntity> results = userRepository.findBySearchCriteria("Nonexistent", null, null, pageable);
+        List<UserEntity> results = userRepository.findBySearchCriteria(null, null, null, 20, 35, pageable);
+
+        assertThat(results).hasSize(2);
+        assertThat(results).extracting(UserEntity::getAge).containsOnly(30, 25);
+    }
+
+    @Test
+    public void findBySearchCriteria_withAgeRangeNoResults() {
+        Pageable pageable = PageRequest.of(0, 10);
+        List<UserEntity> results = userRepository.findBySearchCriteria(null, null, null, 50, 60, pageable);
+
+        assertThat(results).isEmpty();
+    }
+
+    @Test
+    public void findBySearchCriteria_noMatches() {
+        Pageable pageable = PageRequest.of(0, 10);
+        List<UserEntity> results = userRepository.findBySearchCriteria("Nonexistent", null, null, 18, 100, pageable);
 
         assertThat(results).isEmpty();
     }

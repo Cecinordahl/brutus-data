@@ -31,9 +31,9 @@ public class UserService {
         return userRepository.findAll(pageable).getContent();
     }
 
-    public List<UserEntity> searchUsers(String firstName, String lastName, String city, int limit, int offset) {
+    public List<UserEntity> searchUsers(String firstName, String lastName, String city, Integer minAge, Integer maxAge, int limit, int offset) {
         Pageable pageable = PageRequest.of(offset / limit, limit);
-        return userRepository.findBySearchCriteria(firstName, lastName, city, pageable);
+        return userRepository.findBySearchCriteria(firstName, lastName, city, minAge, maxAge, pageable);
     }
 
     public Optional<UserEntity> getUserById(Long id) {

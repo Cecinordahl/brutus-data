@@ -29,10 +29,12 @@ public class UserResource {
             @RequestParam(required = false) String firstName,
             @RequestParam(required = false) String lastName,
             @RequestParam(required = false) String city,
+            @RequestParam(defaultValue = "16") int minAge,
+            @RequestParam(defaultValue = "75") int maxAge,
             @RequestParam(defaultValue = "10") int limit,
             @RequestParam(defaultValue = "0") int offset
     ) {
-        return userService.searchUsers(firstName, lastName, city, limit, offset);
+        return userService.searchUsers(firstName, lastName, city, minAge, maxAge, limit, offset);
     }
 
     @GetMapping("/{id}")
