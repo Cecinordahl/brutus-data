@@ -43,6 +43,34 @@ Det tilbyr god støtte for databaser, enkel konfigurasjon og rask utvikling av m
 
 - **PostgreSQL vs Andre Databaser**: PostgreSQL ble valgt som database på grunn av dens robuste funksjonalitet og støtte for komplekse dataspørringer. Sammenlignet med alternativer som SQLite (som mangler støtte for avanserte spørringer) og MySQL (som mangler noen funksjoner for komplekse datasett), er PostgreSQL godt egnet for produksjonsmiljøer og gir god ytelse og skalerbarhet.
 
+## Bruk
+
+### Last opp data
+For å laste opp data kan du bruke et POST-endepunkt eller opplaste CSV-data fra frontend (hvis implementert). Dataene vil bli lagret i PostgreSQL-databasen.
+
+### Filtrering og søk
+Applikasjonen tilbyr muligheter for filtrering og søk gjennom brukergrensesnittet, som gjør det mulig for HR-avdelingen å se spesifikke brukere eller grupper av brukere basert på ønskede kriterier.
+
+### Statistikkside
+Frontend-applikasjonen viser statistikk over datasettet, som kan inkludere total antall brukere, gjennomsnittsalder, osv. Denne informasjonen oppdateres kontinuerlig basert på data i databasen.
+
+## API-endepunkter
+
+| HTTP Method | Endpoint           | Beskrivelse                    |
+|-------------|---------------------|--------------------------------|
+| POST        | `/api/users`       | Laster opp ny brukerdata       |
+| GET         | `/api/users`       | Henter alle brukere            |
+| GET         | `/api/users/{id}`  | Henter bruker basert på ID     |
+| PATCH       | `/api/users/{id}`  | Oppdaterer en bruker basert på ID |
+| DELETE      | `/api/users/{id}`  | Sletter en bruker basert på ID |
+
+**Merk om sikkerhet for produksjonsmiljø**:  
+Dette prosjektet bruker et enkelt passord for enkelhet i lokal utvikling. 
+Hvis det tas i bruk i et produksjonsmiljø, er det viktig å bruke sterke, unike passord for alle database- og systemtilganger. 
+I tillegg bør alle sensitive opplysninger krypteres og lagres i miljøvariabler eller i et verktøy for hemmelighetsforvaltning, 
+i stedet for å være hardkodet eller lagret som ren tekst i konfigurasjonsfiler.
+
+
 ## Installasjon og Oppsett
 
 ### Forutsetninger
@@ -85,27 +113,6 @@ npm install
 npm start
 ```
 Frontend-applikasjonen vil kjøre på http://localhost:3000.
-
-## Bruk
-
-### Last opp data
-For å laste opp data kan du bruke et POST-endepunkt eller opplaste CSV-data fra frontend (hvis implementert). Dataene vil bli lagret i PostgreSQL-databasen.
-
-### Filtrering og søk
-Applikasjonen tilbyr muligheter for filtrering og søk gjennom brukergrensesnittet, som gjør det mulig for HR-avdelingen å se spesifikke brukere eller grupper av brukere basert på ønskede kriterier.
-
-### Statistikkside
-Frontend-applikasjonen viser statistikk over datasettet, som kan inkludere total antall brukere, gjennomsnittsalder, osv. Denne informasjonen oppdateres kontinuerlig basert på data i databasen.
-
-## API-endepunkter
-
-| HTTP Method | Endpoint           | Beskrivelse                    |
-|-------------|---------------------|--------------------------------|
-| POST        | `/api/users`       | Laster opp ny brukerdata       |
-| GET         | `/api/users`       | Henter alle brukere            |
-| GET         | `/api/users/{id}`  | Henter bruker basert på ID     |
-| PATCH       | `/api/users/{id}`  | Oppdaterer en bruker basert på ID |
-| DELETE      | `/api/users/{id}`  | Sletter en bruker basert på ID |
 
 ## Kjøre applikasjonen
 
