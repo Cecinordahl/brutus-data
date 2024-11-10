@@ -25,4 +25,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
             @Param("minAge") Integer minAge,
             @Param("maxAge") Integer maxAge,
             Pageable pageable);
+
+
 }

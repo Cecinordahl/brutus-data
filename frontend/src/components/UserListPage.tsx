@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { getUsers } from '../services/UserService';
+import {fetchUsers} from '../services/UserService';
 import { User } from '../models/User';
 import UserRow from './UserRow';
 import AgeRangeSlider from './AgeRangeSlider'; // Import the AgeRangeSlider component
 import '../styles/UserList.css';
 
-const UserList: React.FC = () => {
+const UserListPage: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [offset, setOffset] = useState(0);
     const [limit] = useState(10);
@@ -13,21 +13,17 @@ const UserList: React.FC = () => {
         firstName: '',
         lastName: '',
         city: '',
-        minAge: 18,  // Default minimum age
-        maxAge: 100  // Default maximum age
+        minAge: 16,  // Default minimum age
+        maxAge: 75  // Default maximum age
     });
 
-    const fetchUsers = async () => {
-        try {
-            const response = await getUsers(limit, offset, searchParams);
-            setUsers(response.data);
-        } catch (error) {
-            console.error('Error fetching users:', error);
-        }
+    const loadUsers = async () => {
+        const data = await fetchUsers(limit, offset, searchParams);
+        setUsers(data); // Set the fetched user data in state
     };
 
     useEffect(() => {
-        fetchUsers();
+        loadUsers();
     }, [searchParams]); // Trigger search when searchParams change
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,8 +42,8 @@ const UserList: React.FC = () => {
     };
 
     return (
-        <div>
-            <h2>User List</h2>
+        <div className="user-list-page-component">
+            <h1>Search Users</h1>
             <div>
                 <p>Search by First Name, Last Name, or City (results update automatically):</p>
                 <input
@@ -74,7 +70,7 @@ const UserList: React.FC = () => {
 
                 {/* Age Range Slider */}
                 <div>
-                    <p>Filter by Age Range: 16 - 75</p>
+                    <p style={{marginBottom: 0}}>Filter by Age Range 16 - 75</p>
                     <AgeRangeSlider
                         ageRange={[searchParams.minAge, searchParams.maxAge]}
                         onChange={handleAgeRangeChange}
@@ -98,7 +94,7 @@ const UserList: React.FC = () => {
                 </thead>
                 <tbody>
                 {users.map(user => (
-                    <UserRow key={user.id} user={user} />
+                    <UserRow key={user.id} user={user}/>
                 ))}
                 </tbody>
             </table>
@@ -106,4 +102,4 @@ const UserList: React.FC = () => {
     );
 };
 
-export default UserList;
+export default UserListPage;

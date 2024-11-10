@@ -5,9 +5,10 @@ import com.ceci.projects.brutusdata.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:3000")
 public class UserResource {
 
@@ -17,14 +18,14 @@ public class UserResource {
         this.userService = userService;
     }
 
-    @GetMapping
+/*    @GetMapping
     public List<UserEntity> getAllUsers(@RequestParam(defaultValue = "10") int limit,
                                         @RequestParam(defaultValue = "0") int offset
     ) {
         return userService.getUsers(limit, offset);
-    }
+    }*/
 
-    @GetMapping("/search")
+    @GetMapping("/users/search")
     public List<UserEntity> searchUsers(
             @RequestParam(required = false) String firstName,
             @RequestParam(required = false) String lastName,
@@ -37,7 +38,12 @@ public class UserResource {
         return userService.searchUsers(firstName, lastName, city, minAge, maxAge, limit, offset);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/stats")
+    public Map<String, Object> getUserStatistics() {
+        return userService.getUserStatistics();
+    }
+
+  /*  @GetMapping("/{id}")
     public UserEntity getUserById(@PathVariable Long id) {
         return userService.getUserById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -56,5 +62,5 @@ public class UserResource {
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
-    }
+    }*/
 }
