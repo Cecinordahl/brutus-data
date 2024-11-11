@@ -18,6 +18,7 @@ public class UserMapper {
                 .map(this::toUserDto)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
+
     public UserDto toUserDto(UserEntity userEntity) {
         if (userEntity == null) return null;
 

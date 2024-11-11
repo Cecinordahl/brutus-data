@@ -75,7 +75,7 @@ public record UserDto(
             if (ccnumber != null && ccnumber.length() >= 4) {
                 this.maskedCcnumber = "**** **** **** " + ccnumber.substring(ccnumber.length() - 4);
             } else {
-                this.maskedCcnumber = "Invalid ccnumber:" + ccnumber;
+                this.maskedCcnumber = "Invalid ccnumber:";
             }
             return this;
         }

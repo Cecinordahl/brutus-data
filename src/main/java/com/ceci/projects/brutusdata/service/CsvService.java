@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 public class CsvService {
 
-    public static final int VALID_AMOUNT_OF_FIELDS = 9;
+    private static final int VALID_AMOUNT_OF_FIELDS = 9;
 
     public List<UserEntity> parseCsvFile(MultipartFile file) {
         List<UserEntity> users = new ArrayList<>();

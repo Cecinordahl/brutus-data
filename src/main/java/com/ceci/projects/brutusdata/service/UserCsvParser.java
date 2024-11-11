@@ -12,6 +12,15 @@ import java.util.List;
 @Service
 public class UserCsvParser {
 
+    private static final String CREDIT_CARD_REGEX = "\\d{15,16}";
+    private static final int VALID_AMOUNT_OF_FIELDS = 10;
+    private static final int MIN_AGE = 0;
+    private static final int MAX_AGE = 120;
+    private static final int MAX_LATITUDE = 90;
+    private static final int MIN_LATITUDE = -MAX_LATITUDE;
+    private static final int MAX_LONGITUDE = 180;
+    private static final int MIN_LONGITUDE = -MAX_LONGITUDE;
+
     public List<UserEntity> parse(Resource resource) throws Exception {
         List<UserEntity> users = new ArrayList<>();
 
@@ -21,7 +30,8 @@ public class UserCsvParser {
             String[] nextRecord;
             while ((nextRecord = csvReader.readNext()) != null) {
                 try {
-                    users.add(parseRecord(nextRecord));
+                    UserEntity user = parseRecord(nextRecord);
+                    users.add(user);
                 } catch (IllegalArgumentException e) {
                     System.err.println("Skipping invalid record: " + e.getMessage());
                 }
@@ -32,11 +42,12 @@ public class UserCsvParser {
     }
 
     private UserEntity parseRecord(String[] fields) {
-        if (fields.length != 9) {
+        if (fields.length != VALID_AMOUNT_OF_FIELDS) {
             throw new IllegalArgumentException("Record does not have the required 9 fields.");
         }
 
         UserEntity user = new UserEntity();
+        // fields[0] is the "seq" field, which we ignore since we use auto incremented id instead
         user.setFirstName(cleanString(fields[1]));
         user.setLastName(cleanString(fields[2]));
         user.setAge(validateAge(fields[3]));
@@ -56,7 +67,7 @@ public class UserCsvParser {
 
     private int validateAge(String ageStr) {
         int age = Integer.parseInt(ageStr.trim());
-        if (age < 0 || age > 120) {
+        if (age < MIN_AGE || age > MAX_AGE) {
             throw new IllegalArgumentException("Invalid age: " + age);
         }
         return age;
@@ -64,7 +75,7 @@ public class UserCsvParser {
 
     private double validateLatitude(String latStr) {
         double latitude = Double.parseDouble(latStr.trim());
-        if (latitude < -90 || latitude > 90) {
+        if (latitude < MIN_LATITUDE || latitude > MAX_LATITUDE) {
             throw new IllegalArgumentException("Invalid latitude: " + latitude);
         }
         return latitude;
@@ -72,17 +83,23 @@ public class UserCsvParser {
 
     private double validateLongitude(String lonStr) {
         double longitude = Double.parseDouble(lonStr.trim());
-        if (longitude < -180 || longitude > 180) {
+        if (longitude < MIN_LONGITUDE || longitude > MAX_LONGITUDE) {
             throw new IllegalArgumentException("Invalid longitude: " + longitude);
         }
         return longitude;
     }
 
     private String validateCreditCardNumber(String ccStr) {
-        String ccnumber = ccStr.trim();
-        if (!ccnumber.matches("\\d{15,16}")) {
-            throw new IllegalArgumentException("Invalid credit card number");
+        if (ccStr == null || ccStr.isBlank()) {
+            throw new IllegalArgumentException("Credit card number cannot be null or empty");
         }
-        return ccnumber;
+
+        String ccNumber = ccStr.trim();
+
+        if (!ccNumber.matches(CREDIT_CARD_REGEX)) {
+            throw new IllegalArgumentException("Invalid credit card number format: must be 15-16 digits");
+        }
+
+        return ccNumber;
     }
 }

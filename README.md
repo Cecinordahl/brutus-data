@@ -136,3 +136,5 @@ Frontend-applikasjonen vil kjøre på http://localhost:3000.
 - Lage tokenization/bedre masking for kredittkort nr
 - Tester (inkl IT)
 - Nye, mer passende navn til api'ene
+- Logikk for å ikke lagre duplikater basert på feks kombinasjon av fult navn og ccnumber
+- Indeksering for spørringer som blir brukt ofte
